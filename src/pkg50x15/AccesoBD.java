@@ -7,8 +7,10 @@ package pkg50x15;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,9 +64,78 @@ class AccesoBD {
             Connection conexion=DriverManager.getConnection(url, usuario, password);
             Statement stmt=conexion.createStatement();
             stmt.executeUpdate(sql);
+            stmt.close();
+            conexion.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccesoBD.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    static ArrayList<Pregunta> recuperarPreguntas() {
+        ArrayList<Pregunta> lista_preguntas=new ArrayList();
+        try {
+            Connection conexion=DriverManager.getConnection(url, usuario, password);
+            Statement stmt=conexion.createStatement();
+            String query="SELECT * FROM t_preguntas";
+            ResultSet rs=stmt.executeQuery(query);
+            
+            while(rs.next())
+            {
+                String enunciado=rs.getString("enunciado");
+                String resp_a=rs.getString("resp_a");
+                String resp_b=rs.getString("resp_b");
+                String resp_c=rs.getString("resp_c");
+                String resp_d=rs.getString("resp_d");
+                String resp_correcta=rs.getString("resp_correcta");
+                Pregunta p=new Pregunta(enunciado, resp_a, resp_b, resp_c, resp_d, resp_correcta);
+                lista_preguntas.add(p);
+                
+            }
+            stmt.close();
+            conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccesoBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     return lista_preguntas;
+    }
+
+    static void grabarRanking(Ranking r) {
+       String sql="INSERT INTO ranking VALUES('"+r.getNombre()+"', '"+r.getAciertos()+"')";
+        System.out.println(sql);
+        
+        try {
+            Connection conexion=DriverManager.getConnection(url, usuario, password);
+            Statement stmt=conexion.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccesoBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    static ArrayList<Ranking> recuperarRanking() {
+        ArrayList<Ranking> lista_puntuaciones=new ArrayList();
+        try {
+            Connection conexion=DriverManager.getConnection(url, usuario, password);
+            Statement stmt=conexion.createStatement();
+            String query="SELECT * FROM ranking ORDER BY puntuacion DESC";
+            ResultSet rs=stmt.executeQuery(query);
+            
+            while(rs.next())
+            {
+                String nombre=rs.getString("nombre");
+                int puntuacion=rs.getInt("puntuacion");
+                Ranking r=new Ranking(nombre, puntuacion);
+                lista_puntuaciones.add(r);
+                
+            }
+            stmt.close();
+            conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccesoBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     return lista_puntuaciones;
     }
     
 }

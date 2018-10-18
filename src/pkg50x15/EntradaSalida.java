@@ -5,6 +5,7 @@
  */
 package pkg50x15;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -44,6 +45,27 @@ static Scanner sc=new Scanner(System.in);
         String resp_correcta=sc.nextLine();
         Pregunta p=new Pregunta(enunciado, op_a, op_b, op_c, op_d, resp_correcta);
         return p;
+    }
+
+    static String hacerPregunta(Pregunta pregunta) {
+        System.out.println(pregunta.getEnunciado());
+        System.out.println("a)"+pregunta.getResp_a());
+        System.out.println("b)"+pregunta.getResp_b());
+        System.out.println("c)"+pregunta.getResp_c());
+        System.out.println("d)"+pregunta.getResp_d());
+        String respuesta_usur=sc.nextLine();
+        return respuesta_usur;
+    }
+
+    public static void mostrarRanking(ArrayList<Ranking> lista) {
+        //¿Donde esta el ranking?
+         System.out.println("**********\t\t**********");
+            System.out.println("NOMBRE\t\tPUNTOS");
+            System.out.println("**********\t\t**********");
+        for(int i=0; i<lista.size(); i++)
+        {  
+            System.out.println(lista.get(i).getNombre()+"\t\t"+lista.get(i).getAciertos());
+        }
     }
     
 }

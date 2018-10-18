@@ -36,20 +36,21 @@ public class Main {
                     ArrayList<Pregunta> lista_preguntas=AccesoBD.recuperarPreguntas();
                     for (int i=0; i<lista_preguntas.size(); i++)
                     {
-                        Pregunta p=lista_preguntas.get(i);
-                        String repuesta_usur=EntradaSalida.hacerPregunta(p);
-                        if(repuesta_usur.equalsIgnoreCase(p.getResp_correcta()))
+                        Pregunta pregunta=lista_preguntas.get(i);
+                        String repuesta_usur=EntradaSalida.hacerPregunta(pregunta);
+                        if(repuesta_usur.equalsIgnoreCase(pregunta.getResp_correcta()))
                         {
                             
                             aciertos++;
                         }
                     }
-                    Ranking r=new Ranking(nombre, aciertos);
-                    AccesoBD.grabarRanking(r);
+                   Ranking r=new Ranking(nombre, aciertos);
+                   AccesoBD.grabarRanking(r);
                     break;
                 case 3:
                     //Ver ranking
-                    
+                    ArrayList<Ranking> lista_puntuaciones=AccesoBD.recuperarRanking();
+                    EntradaSalida.mostrarRanking(lista_puntuaciones);
                     break;
                     
             }
